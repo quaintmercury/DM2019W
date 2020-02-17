@@ -761,6 +761,23 @@ Press enter to end
 ![CPU state display](cpu-state.png)
 
 
+## Hints (Fixing Common Problems)
+
+* When decoding instructions, don't forget to convert ints representing op code and cond code to 
+`OpCode` and `CondFlag`.
+
+* When decoding instructions, remember to use `extract_signed` for the offset field.
+
+*  When encoding, use self.op.value and self.cond.value to 
+get the integer value of op code and cond code.
+
+* In `ALU_OPS`, don't forget to use integer division (`//`) rather than floating point division (`/`).
+
+* Remember how to get the information from a register or memory: 
+   using `Register.get()` and `Memory.get(index)`. 
+   Similar for putting information: `Register.put(value)` and `Memory.put(index, value)`.
+   (And remember when we write `Class.method(v)` what we really mean is `o.method(x))
+
 
 
 
