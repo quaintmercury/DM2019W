@@ -765,7 +765,7 @@ Press enter to end
 ## Hints (Fixing Common Problems)
 
 * When decoding instructions, don't forget to convert ints representing op code and cond code to 
-`OpCode` and `CondFlag`.
+objects of class `OpCode` and `CondFlag`, respectively.
 
 * When decoding instructions, remember to use `extract_signed` for the offset field.
 
@@ -774,10 +774,11 @@ get the integer value of op code and cond code.
 
 * In `ALU_OPS`, don't forget to use integer division (`//`) rather than floating point division (`/`).
 
-* Remember how to get the information from a register or memory: 
+* Remember how to obtain the information from a register or memory: 
    using `Register.get()` and `Memory.get(index)`. 
-   Similar for putting information: `Register.put(value)` and `Memory.put(index, value)`.
-   (And remember when we write `Class.method(v)` what we really mean is `o.method(x))
+   Similar for saving information in a register or memory: `Register.put(value)` and `Memory.put(index, value)`.
+   (And remember when we write `Class.method(v)` what we really mean is `o.method(x)` for some object `o`
+   with class `Class` and some expression `x` with the value to use for `v`.)
 
 
 
