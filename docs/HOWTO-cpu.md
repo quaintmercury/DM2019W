@@ -1,18 +1,21 @@
 # Building the Virtual Duck Machine CPU
 
 In this project we will construct the simulated CPU of 
-the Duck Machine 2019W (DM2019W).  duck_machine.md describes 
+the Duck Machine 2020W, which is identical to 
+the Duck Machine model 2019W but comes in new 
+colors and is more expensive.  (Some documentation refers
+to earlier models.)  duck_machine.md describes 
 the processor. We will build two files: 
 
 * ```instr_format.py``` will contain definitions of the fields 
-in the DM2019W instruction word, and a class Instruction to hold 
+in the DM2020W instruction word, and a class Instruction to hold 
 a "decoded" instruction.  An *Instruction* object will simply 
 have a separate field (instance variable) for each of the fields 
-in a DM2019W instruction word, plus methods to convert between 
+in a DM2020W instruction word, plus methods to convert between 
 words (integers) and *Instruction* objects. 
 
 * ```cpu.py``` will be the central processing unit of the
-DM2019W.  It will define an ALU class for the arithmetic and logic unit, 
+DM2020W.  It will define an ALU class for the arithmetic and logic unit, 
 and a CPU class for the processor of which the ALU is one part.  
 
 ## Other parts 
@@ -29,7 +32,7 @@ the Wikipedia article on memory-mapped IO explains, "One merit
  that port I/O brings, a CPU requires less internal logic and is 
  thus cheaper, faster, easier to build, consumes less power and 
  can be physically smaller."  The "easier to build" part is the 
- key reason the DM2019W uses memory-mapped IO. 
+ key reason the DM2020W uses memory-mapped IO. 
  
  * ```duck_machine.py``` is where we wire together the 
  CPU and memory and a graphical display.  
@@ -47,7 +50,7 @@ the Wikipedia article on memory-mapped IO explains, "One merit
  
  ```python
 """
-Instruction format for the Duck Machine 2019W (DM2019W),
+Instruction format for the Duck Machine 2020W (DM2020W),
 a simulated computer modeled loosely on the ARM processor
 found in many cell phones and the Raspberry Pi.
 
@@ -68,7 +71,7 @@ from bitfield import BitField
 ``` 
 
 It is convenient to give names to the operation codes of the
-DM2019W using a Python *enum*.  For the condition codes, 
+DM2020W using a Python *enum*.  For the condition codes, 
 a special kind of *enum* called a *Flag* is useful, as we'll 
 discuss below: 
 
@@ -76,7 +79,7 @@ discuss below:
 from enum import Enum, Flag
 ```
  
-Defining the layout of the DM2019W instruction word is simple; 
+Defining the layout of the DM2020W instruction word is simple; 
 we just define a BitField object for each field: 
 
 ```python
@@ -98,7 +101,7 @@ field will actually be treated as a small array of bits.
 
 ### Operation Codes
 
-The DM2019W has a very small number of operation codes. 
+The DM2020W has a very small number of operation codes. 
 It is an extreme example of the *reduced instruction set 
 computing* (RISC) paradigm, of which the ARM chips are more 
 typical examples.  You probably have a RISC chip in your phone. 
@@ -107,7 +110,7 @@ set of operation codes.  Your laptop probably contains a CPU
 from Intel X86 family, which follows the CISC design.
 
 We'll declare an enumeration to associate the names of the 
-DM2019W instruction codes with their internal representation 
+DM2020W instruction codes with their internal representation 
 as integers: 
 
 ```python
@@ -131,13 +134,13 @@ class OpCode(Enum):
 
 As you can see, we have only 8 different instruction codes. 
 We could have fit all of these codes into 3 bits, but we 
-set aside 8 in the instruction word.  Evidently the chip 
+set aside 5 in the instruction word.  Evidently the chip 
 designers have grand plans for future generations of 
 compatible chips.  
 
 ### Condition Codes 
 
-DM2019W instructions are *predicated*.  This means that an 
+DM2020W instructions are *predicated*.  This means that an 
 instruction may be executed or skipped depending on what 
 happened in the prior instruction.  The CPU will contain 
 a *condition register* that records information about 
@@ -241,8 +244,8 @@ if __name__ == "__main__":
 
 ## Register names
 
-Three of the fields of a DM2019W instruction word specify
-*registers* to be used in the instruction.  The DM2019W 
+Three of the fields of a DM2020W instruction word specify
+*registers* to be used in the instruction.  The DM2020W 
 has 16 registers, which we call the *register file*. 
 The *address* of a register is therefore a number from 
 0 to 15.  Two of them are special:  Register 0 will be a 
@@ -255,7 +258,7 @@ a dict:
 ```python
 # Registers are numbered from 0 to 15, and have names
 # like r3, r15, etc.  Two special registers have additional
-# names:  r0 is called 'zero' because on the DM2019W it always
+# names:  r0 is called 'zero' because on the DM2020W it always
 # holds value 0, and r15 is called 'pc' because it is used to
 # hold the program counter.
 #
@@ -401,7 +404,7 @@ constructing the CPU.  We'll keep it in ```cpu.py```:
 
 ```python
 """
-Duck Machine model DM2019W CPU
+Duck Machine model DM2020W CPU
 """
 
 from instr_format import Instruction, OpCode, CondFlag, decode
@@ -675,7 +678,7 @@ bits in the instruction).  We'll say the condition is
       of the calculation as a memory address, and save the 
       value of the register specified by ```instr.target```
       to that location in memory. 
-      * If the operation was GET, we use use the result 
+      * If the operation was LOAD, we use use the result 
       of the calculation as a memory address, and fetch 
       the value of that location in memory, storing 
       it in the register specified by ```instr.target```. 
@@ -700,7 +703,7 @@ are blank lines, comment lines, and debugging statements
 While I'd like to have some nice stand-alone test cases for 
 the ```step``` method, they are difficult to set up because 
 they involve the complete state of the CPU and memory.  We'll 
-be able to test very shortly by executing DM2019W programs. 
+be able to test very shortly by executing DM2020W programs. 
    
 ### Run
 
