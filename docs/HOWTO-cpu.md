@@ -4,28 +4,29 @@ In this project we will construct the simulated CPU of
 the Duck Machine 2020W, which is identical to 
 the Duck Machine model 2019W but comes in new 
 colors and is more expensive.  (Some documentation refers
-to earlier models.)  duck_machine.md describes 
+to earlier models.)  
+`duck_machine.md` describes 
 the processor. We will build two files: 
 
 * ```instr_format.py``` will contain definitions of the fields 
 in the DM2020W instruction word, and a class Instruction to hold 
-a "decoded" instruction.  An *Instruction* object will simply 
+a "decoded" instruction.  An `Instruction` object will simply 
 have a separate field (instance variable) for each of the fields 
 in a DM2020W instruction word, plus methods to convert between 
-words (integers) and *Instruction* objects. 
+words (integers) and `Instruction` objects. 
 
 * ```cpu.py``` will be the central processing unit of the
-DM2020W.  It will define an ALU class for the arithmetic and logic unit, 
+DM2020W.  It will define an `ALU` class for the arithmetic and logic unit, 
 and a CPU class for the processor of which the ALU is one part.  
 
 ## Other parts 
 
 Some other parts of the Duck Machine are provided for you.  
 
-* ```memory.py``` defines the *Memory* class (which is essentially an
-array of integers, like a Python list), and *MemoryMappedIO*. 
-*MemoryMappedIO* is like a normal Memory (in fact it is a 
-subclass of *Memory*), except it interprets 
+* ```memory.py``` defines the `Memory` class (which is essentially an
+array of integers, like a Python list), and `MemoryMappedIO`. 
+`MemoryMappedIO` is like a normal Memory (in fact it is a 
+subclass of `Memory`), except it interprets 
 some particular addresses as commands for input or output.  As 
 the Wikipedia article on memory-mapped IO explains, "One merit
  of memory-mapped I/O is that, by discarding the extra complexity
@@ -63,7 +64,7 @@ See docs/duck_machine.md for details.
 """
 ```
 
-We will need the *BitField* class from last week to extract 
+We will need the `BitField` class from last week to extract 
 the parts of an instruction word: 
 
 ```python
@@ -93,10 +94,10 @@ reg_src2_field = BitField(10, 13)
 offset_field = BitField(0, 9)
 ```
 
-We won't actually use the *reserved* field, but have given 
+We won't actually use the `reserved` field, but have given 
 it a definition just for documentation.  All of the other 
 fields will be treated as unsigned integers (non-negative values
-only), except the *offset* field is signed.  The *cond* (condition code)
+only), except the `offset` field is signed.  The `cond` (condition code)
 field will actually be treated as a small array of bits. 
 
 ### Operation Codes
@@ -148,7 +149,7 @@ the result of the prior ALU operation:  Was it zero, positive,
 negative, or an "overflow" (e.g., division by zero).  
 Each instruction contains a set of bits that are identical 
 in format to the condition register. If any of the 
-conditions specified in the *cond* field of the instruction 
+conditions specified in the `cond` field of the instruction 
 are recorded as true in the CPU condition register, the 
 instruction is executed, otherwise it is skipped. 
 
@@ -362,16 +363,16 @@ def decode(word: int) -> Instruction:
 ```
 
 The logic of this function is straightforward:  Use the 
-BitField objects defined before (instr_field, reg_target_field, etc.) 
+BitField objects defined before (`instr_field`, `reg_target_field`, etc.) 
 to extract each of the fields from ```word```, construct 
-a single *Instruction* object from those fields, and return 
-the *Instruction* object. 
+a single `Instruction` object from those fields, and return 
+the `Instruction` object. 
 
 How can we test the instruction decoding?  It would help to 
-have the inverse operation, a way of converting an *Instruction* 
+have the inverse operation, a way of converting an `Instruction` 
 object into a single instruction word (an integer).  That could be
 useful later for building an assembler also, so we might as well 
-build it now.  We'll add a method to the *Instruction* class to 
+build it now.  We'll add a method to the `Instruction` class to 
 perform the conversion: 
 
 ```python
@@ -380,7 +381,7 @@ perform the conversion:
 ```
 
 Like the ```decode``` function, the ```encode``` method can 
-make use of the *BitField* objects defined above.  And therein lies
+make use of the `BitField` objects defined above.  And therein lies
 a weakness for testing:  If we make an error in one, there is a
 good chance we'll make a corresponding error in the other and fail 
 to catch it with test cases.  But it's the best we can do for now. 
@@ -411,7 +412,7 @@ from instr_format import Instruction, OpCode, CondFlag, decode
 from typing import Tuple
 ```
 
-The CPU will need to use a *Memory* and *Register*s from 
+The CPU will need to use a `Memory` and `Register`s from 
 modules that I have provided, as well as model-view-controller 
 components for displaying the CPU state. 
 
@@ -532,7 +533,7 @@ class TestALU(unittest.TestCase):
 We are ready at last to create the central processing unit (CPU) itself. 
 
 The view component expects to receive notification of 
-*CPUStep* events.  
+`CPUStep` events.  
 
 ```python
 class CPUStep(MVCEvent):
@@ -545,8 +546,8 @@ class CPUStep(MVCEvent):
         self.instr = instr
 ```
 
-The *CPU* class can then inherit the standard model-view-containiner mechanisms 
-(keeping a list of listeners) from the *MVC* class defined in ```mvc.py```.
+The `CPU` class can then inherit the standard model-view-containiner mechanisms 
+(keeping a list of listeners) from the `MVCListenable` class defined in ```mvc.py```.
 
 ```python
 class CPU(MVCListenable):
