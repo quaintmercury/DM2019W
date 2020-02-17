@@ -769,7 +769,7 @@ objects of class `OpCode` and `CondFlag`, respectively.
 
 * When decoding instructions, remember to use `extract_signed` for the offset field.
 
-*  When encoding, use self.op.value and self.cond.value to 
+*  When encoding, use `self.op.value` and `self.cond.value` to 
 get the integer value of op code and cond code.
 
 * In `ALU_OPS`, don't forget to use integer division (`//`) rather than floating point division (`/`).
