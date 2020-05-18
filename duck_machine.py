@@ -1,8 +1,8 @@
 """
-Duck Machine model DM2018W, 
-a simulated computer. 
+Duck Machine model DM2018W,
+a simulated computer.
 
-Interprets Duck Machine object code. 
+Interprets Duck Machine object code.
 """
 
 from memory import Memory, MemoryMappedIO
@@ -62,7 +62,7 @@ def main():
     mem.map_address_in(510,duck_in)
     mem.map_address_out(511,duck_out)
     cpu = CPU(mem)
-    if args.display: 
+    if args.display:
        display = view.MachineStateView(cpu,1200,800)
     load(args.objfile, mem)
     cpu.run(single_step=args.step)

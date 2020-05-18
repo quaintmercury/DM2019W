@@ -1,6 +1,6 @@
 """
 The Duck Machine model DM2018W main memory
-is an array of 32-bit integers. 
+is an array of 32-bit integers.
 
 """
 
@@ -14,9 +14,9 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 class SegFault(Exception):
-    """Segmentation fault is actually an operating-system 
-    level fault, not a hardware fault, but it's what you 
-    see when you use a bad address in a program, so we'll 
+    """Segmentation fault is actually an operating-system
+    level fault, not a hardware fault, but it's what you
+    see when you use a bad address in a program, so we'll
     use that exception name here.
     """
     pass
@@ -40,8 +40,8 @@ class MemoryWrite(MemoryEvent):
 
 
 class Memory(MVCListenable):
-    """Just an array of integers.  Other values are 
-    encoded as integers. 
+    """Just an array of integers.  Other values are
+    encoded as integers.
     """
 
     def __init__(self, capacity: int=1024) -> None:
@@ -69,11 +69,11 @@ class Memory(MVCListenable):
 
 
 class MemoryMappedIO(Memory):
-    """Use a few otherwise unused addresses for input/output. 
-    It is a common practice to trigger some input/output or 
-    device commands by interpreting some memory addresses as 
-    as commands. This is not done in the CPU, but by connecting 
-    to the bus (wires) between CPU and memory. 
+    """Use a few otherwise unused addresses for input/output.
+    It is a common practice to trigger some input/output or
+    device commands by interpreting some memory addresses as
+    as commands. This is not done in the CPU, but by connecting
+    to the bus (wires) between CPU and memory.
     """
     def __init__(self, capacity: int=1024) -> None:
         super().__init__(capacity)
